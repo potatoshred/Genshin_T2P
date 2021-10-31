@@ -1,0 +1,1 @@
+pyinstaller -i favicon.ico -w -F T2P.py
