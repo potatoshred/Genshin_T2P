@@ -174,8 +174,34 @@ param = read_config('./config.json')
 folder_path = param.get('folder_path', '')
 icon = "./favicon.ico"
 
-sg.theme('DarkAmber')  # Add a touch of color
+# sg.theme('DarkBlack')  # Add a touch of color
+  # Add a touch of color
 # All the stuff inside your window.
+theme = param.get("theme", "Default1")
+if theme == "默认":
+    theme = "Default1"
+sg.theme(theme)
+themes = ["默认", 'Black', 'BlueMono', 'BluePurple', 'BrightColors', 'BrownBlue',
+          'Dark', 'Dark2', 'DarkAmber', 'DarkBlack', 'DarkBlack1', 'DarkBlue', 'DarkBlue1', 'DarkBlue10',
+          'DarkBlue11', 'DarkBlue12', 'DarkBlue13', 'DarkBlue14', 'DarkBlue15', 'DarkBlue16', 'DarkBlue17',
+          'DarkBlue2', 'DarkBlue3', 'DarkBlue4', 'DarkBlue5', 'DarkBlue6', 'DarkBlue7', 'DarkBlue8', 'DarkBlue9',
+          'DarkBrown', 'DarkBrown1', 'DarkBrown2', 'DarkBrown3', 'DarkBrown4', 'DarkBrown5', 'DarkBrown6',
+          'DarkBrown7', 'DarkGreen', 'DarkGreen1', 'DarkGreen2', 'DarkGreen3', 'DarkGreen4', 'DarkGreen5',
+          'DarkGreen6', 'DarkGreen7', 'DarkGrey', 'DarkGrey1', 'DarkGrey10', 'DarkGrey11', 'DarkGrey12',
+          'DarkGrey13', 'DarkGrey14', 'DarkGrey2', 'DarkGrey3', 'DarkGrey4', 'DarkGrey5', 'DarkGrey6', 'DarkGrey7',
+          'DarkGrey8', 'DarkGrey9', 'DarkPurple', 'DarkPurple1', 'DarkPurple2', 'DarkPurple3', 'DarkPurple4', 'DarkPurple5',
+          'DarkPurple6', 'DarkPurple7', 'DarkRed', 'DarkRed1', 'DarkRed2', 'DarkTanBlue', 'DarkTeal', 'DarkTeal1', 'DarkTeal10',
+          'DarkTeal11', 'DarkTeal12', 'DarkTeal2', 'DarkTeal3', 'DarkTeal4', 'DarkTeal5', 'DarkTeal6', 'DarkTeal7', 'DarkTeal8',
+          'DarkTeal9', 'Default', 'Default1', 'DefaultNoMoreNagging', 'GrayGrayGray', 'Green', 'GreenMono', 'GreenTan',
+          'HotDogStand', 'Kayak', 'LightBlue', 'LightBlue1', 'LightBlue2', 'LightBlue3', 'LightBlue4', 'LightBlue5',
+          'LightBlue6', 'LightBlue7', 'LightBrown', 'LightBrown1', 'LightBrown10', 'LightBrown11', 'LightBrown12',
+          'LightBrown13', 'LightBrown2', 'LightBrown3', 'LightBrown4', 'LightBrown5', 'LightBrown6', 'LightBrown7',
+          'LightBrown8', 'LightBrown9', 'LightGray1', 'LightGreen', 'LightGreen1', 'LightGreen10', 'LightGreen2',
+          'LightGreen3', 'LightGreen4', 'LightGreen5', 'LightGreen6', 'LightGreen7', 'LightGreen8', 'LightGreen9',
+          'LightGrey', 'LightGrey1', 'LightGrey2', 'LightGrey3', 'LightGrey4', 'LightGrey5', 'LightGrey6', 'LightPurple',
+          'LightTeal', 'LightYellow', 'Material1', 'Material2', 'NeutralBlue', 'Purple', 'Python', 'Reddit', 'Reds',
+          'SandyBeach', 'SystemDefault', 'SystemDefault1', 'SystemDefaultForReal', 'Tan', 'TanBlue', 'TealMono', 'Topanga']
+
 
 column_floor = [  # [sg.Text('层',font=[6])],
     [sg.Radio("第12层", 'FLOOR', default=True), sg.Radio("第11层", 'FLOOR'), sg.Radio("第10层", 'FLOOR'),
@@ -185,7 +211,7 @@ column_chamber = [  # [sg.Text('间',font=[6])],
     [sg.Radio("第3间", "CHAMBER", default=True), sg.Radio("第2间", "CHAMBER"), sg.Radio("第1间", "CHAMBER")]
 ]
 layout = [
-    [sg.Text('队伍一', justification='center', size=(70, 1), background_color='darkred')],
+    [sg.Text('队伍一', justification='center', size=(70, 1), background_color='darkred', text_color='white')],
     [sg.Text('选择角色'), sg.Combo(chara_names, size=(10, 1), default_value=param.get("0" ,'')),
      sg.Text('等级范围'), sg.Spin(list(range(1, 91)), initial_value=71), sg.Spin(list(range(1, 91)), initial_value=90),
      sg.Text('命座范围'), sg.Spin(list(range(0, 7)), initial_value=0), sg.Spin(list(range(0, 7)), initial_value=6),
@@ -210,7 +236,7 @@ layout = [
      sg.Text('好感范围'), sg.Spin(list(range(0, 11)), initial_value=0),
      sg.Spin(list(range(0, 11)), initial_value=10),
      ],
-    [sg.Text('队伍二', justification='center', size=(70, 1), background_color='darkcyan')],
+    [sg.Text('队伍二', justification='center', size=(70, 1), background_color='darkcyan', text_color='white')],
     [sg.Text('选择角色'), sg.Combo(chara_names, size=(10, 1), default_value=param.get("28" ,'')),
      sg.Text('等级范围'), sg.Spin(list(range(1, 91)), initial_value=71),
      sg.Spin(list(range(1, 91)), initial_value=90),
@@ -247,10 +273,12 @@ layout = [
      sg.FolderBrowse('选择数据路径', target='folder', key="-CHOOSEFOLDER-", enable_events=True,
                      initial_folder=folder_path or './'),
      sg.Button('读取数据', key='-READ-', tooltip="只需要读取一遍,第一遍会比较慢，请耐心等待十秒左右"),
-     sg.Button('计算', key='-CALC-', enable_events=True, size=[6, 3], button_color='#FF6A06')],
+     sg.Button('计算', key='-CALC-', enable_events=True, size=[6, 3])],
     [sg.T("")],
+    [sg.Combo(themes,key="theme",default_value=param.get("theme", "Default1")), sg.Button('更改主题',key="-THEME-")],
     [sg.Graph((560, 160), (0, 160), (560, 0), background_color='grey', key="-GRAPH-", enable_events=True)],
     [sg.T('out:'),sg.StatusBar("",key="-CONSOLE-",size=[60,4],text_color='white')],
+
 
 ]
 
@@ -264,10 +292,16 @@ console = window["-CONSOLE-"]
 
 while True:
     event, values = window.read()
-    if event == sg.WIN_CLOSED:  # if user closes window or clicks cancel
+    if event == sg.WIN_CLOSED: # if user closes window or clicks cancel
         print(param)
         write_config(param, './config.json')
         break
+
+    if event == "-THEME-" and values['theme']:
+        theme = values['theme']
+        param['theme'] = theme
+        sg.PopupOK("更改的主题会在重启后生效",icon=icon)
+
 
     if event == "-READ-":
         if folder_path != values['folder']:
