@@ -277,7 +277,7 @@ layout = [
     [sg.T("")],
     [sg.Combo(themes,key="theme",default_value=param.get("theme", "Default1")), sg.Button('更改主题',key="-THEME-")],
     [sg.Graph((560, 160), (0, 160), (560, 0), background_color='grey', key="-GRAPH-", enable_events=True)],
-    [sg.T('out:'),sg.StatusBar("",key="-CONSOLE-",size=[60,4],text_color='white')],
+    [sg.T('out:'),sg.StatusBar("",key="-CONSOLE-",size=[60,4],text_color='#777777')],
 
 
 ]
