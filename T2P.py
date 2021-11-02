@@ -346,40 +346,43 @@ while True:
             sg.PopupOK("数据读取完毕", icon=icon)
 
     if event == "-CALC-":  # if user closes window or clicks cancel
-        if data_0:
-            teams = parse_teams(values)
-            if teams:
-                pass
+        try:
+            if data_0:
+                teams = parse_teams(values)
+                if teams:
+                    pass
+                else:
+                    sg.PopupError("两队不存在竞争关系,请重新选择",icon=icon)
+                    continue
+                chamber = parse_chamber(values)
+                both_have, cnter = calc(teams, data_0,chamber)
+                console.Update(f'深渊房间: {chamber[:2]}-{chamber[2]}, 样本数: {data_0.__len__()}, 共同持有人数: {both_have}\n'
+                               f'两队队员: {list(teams[0].keys())}    {list(teams[1].keys())}\n'
+                               f'计算结果: {cnter}')
+                # sg.PopupOK(f'{cnter}')
+                tot1 = sum(cnter[0]) or 0.00001
+                tot2 = sum(cnter[1]) or 0.00001
+                x_mid = 560 * tot1 / (tot1 + tot2)
+                rect1 = [[0, 0], [x_mid, 160]]
+                rect2 = [[x_mid, 0], [560, 160]]
+                graph.draw_rectangle(*rect1, fill_color='darkred')
+                graph.draw_rectangle(*rect2, fill_color='#009797')
+                y1_mid = 160 * cnter[0][0] / tot1
+                rect3 = [[0, 0], [x_mid, y1_mid]]
+                graph.draw_rectangle(*rect3, fill_color='#A40000')
+                y2_mid = 160 * cnter[1][0] / tot2
+                rect4 = [[x_mid, 0], [560, y2_mid]]
+                graph.draw_rectangle(*rect4, fill_color='darkcyan')
+
+                graph.draw_text(f'上半: %d' % cnter[0][0], location=[x_mid / 2, y1_mid / 2], color='white')
+                graph.draw_text(f'下半: %d' % cnter[0][1], location=[x_mid / 2, 80 + y1_mid / 2], color='white')
+                graph.draw_text(f'上半: %d' % cnter[1][0], location=[280 + x_mid / 2, y2_mid / 2], color='white')
+                graph.draw_text(f'下半: %d' % cnter[1][1], location=[280 + x_mid / 2, 80 + y2_mid / 2], color='white')
+
             else:
-                sg.PopupError("两队不存在竞争关系,请重新选择",icon=icon)
-                continue
-            chamber = parse_chamber(values)
-            both_have, cnter = calc(teams, data_0,chamber)
-            console.Update(f'深渊房间: {chamber[:2]}-{chamber[2]}\n'
-                           f'两队队员: {list(teams[0].keys())}    {list(teams[1].keys())}\n'
-                           f'计算结果: {cnter}, 共同持有人数: {both_have}')
-            # sg.PopupOK(f'{cnter}')
-            tot1 = sum(cnter[0]) or 0.00001
-            tot2 = sum(cnter[1]) or 0.00001
-            x_mid = 560 * tot1 / (tot1 + tot2)
-            rect1 = [[0, 0], [x_mid, 160]]
-            rect2 = [[x_mid, 0], [560, 160]]
-            graph.draw_rectangle(*rect1, fill_color='darkred')
-            graph.draw_rectangle(*rect2, fill_color='#009797')
-            y1_mid = 160 * cnter[0][0] / tot1
-            rect3 = [[0, 0], [x_mid, y1_mid]]
-            graph.draw_rectangle(*rect3, fill_color='#A40000')
-            y2_mid = 160 * cnter[1][0] / tot2
-            rect4 = [[x_mid, 0], [560, y2_mid]]
-            graph.draw_rectangle(*rect4, fill_color='darkcyan')
-
-            graph.draw_text(f'上半: %d' % cnter[0][0], location=[x_mid / 2, y1_mid / 2], color='white')
-            graph.draw_text(f'下半: %d' % cnter[0][1], location=[x_mid / 2, 80 + y1_mid / 2], color='white')
-            graph.draw_text(f'上半: %d' % cnter[1][0], location=[280 + x_mid / 2, y2_mid / 2], color='white')
-            graph.draw_text(f'下半: %d' % cnter[1][1], location=[280 + x_mid / 2, 80 + y2_mid / 2], color='white')
-
-        else:
-            sg.PopupError("请先读取数据", icon=icon)
+                sg.PopupError("请先读取数据", icon=icon)
+        except:
+            sg.PopupError("发生错误，请检查数据是否含空格或无效数字", icon=icon)
     print(values)
 
 window.close()

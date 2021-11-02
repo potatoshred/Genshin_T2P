@@ -16,4 +16,8 @@ Tool for Team PVP in game Genshin
 
 
 ---
+
+请自行到[<天空岛数据库>](https://youngmoe.com)下载json格式数据
+
+---
 如果有问题，请发issue
